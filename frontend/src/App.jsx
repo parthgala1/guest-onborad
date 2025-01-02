@@ -11,6 +11,7 @@ import { GuestLandingPage } from "@/components/GuestLandingPage";
 import { LoginPage } from "@/components/Login";
 import { RegisterPage } from "@/components/Register";
 import { useAuthContext } from "./context/AuthContext";
+import HotelPage from "./components/HotelPage";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -62,6 +63,7 @@ const App = () => {
           path="/guest-registration/:hotelId"
           element={<GuestLandingPage />}
         />
+        <Route path="/hotel/:hotelId" element={<HotelPage />} />
         <Route
           path="/login"
           element={

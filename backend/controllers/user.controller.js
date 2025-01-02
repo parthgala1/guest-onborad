@@ -74,10 +74,7 @@ export const userLogin = async (req, res) => {
       sameSite: "none",
     });
 
-    res.status(200).json({
-      _id: user._id,
-      userType: user.userType,
-    });
+    res.status(200).json(user);
   } catch (err) {
     console.log("Error in signup controller", err.message);
     res.status(500).json({ message: "Internal server error" });
@@ -87,7 +84,7 @@ export const userLogin = async (req, res) => {
 export const userLogout = async (req, res) => {
   try {
     res.clearCookie("token");
-    res.status(200).json({ message: "User logged out successfully" });
+    res.status(200).json("User logged out successfully");
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
   }
