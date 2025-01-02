@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "sih-server",
+  "name": "guest-server",
   "builds": [{ "src": "./index.js", "use": "@vercel/node" }],
   "routes": [{ "src": "/(.*)", "dest": "/index.js" }]
 }
