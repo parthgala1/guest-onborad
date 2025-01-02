@@ -20,16 +20,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
+import { useAuthContext } from "../context/AuthContext";
 
 export const LoginPage = () => {
+  const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    userType: "main-admin", // or guest-admin
     email: "",
     password: "",
-    userType: "main-admin", // or guest-admin
   });
 
   const handleSubmit = async (e) => {
@@ -39,19 +41,36 @@ export const LoginPage = () => {
 
     try {
       // Add your login API call here
-      console.log("Login attempt:", formData);
+      const response = await fetch("http://localhost:4224/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error("Invalid email or password");
+      } else {
+        const data = await response.json();
+        localStorage.setItem("guest-user", JSON.stringify(data));
+        setAuthUser(data);
+        console.log("User logged in:", data.userType);
+
+        // Redirect based on user type
+        if (data.userType === "main-admin") {
+          console.log("User logged in as main-admin");
+
+          navigate("/admin");
+        } else {
+          console.log("User logged in as guest-admin");
+
+          navigate("/guest-admin");
+        }
+      }
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect based on user type
-      if (formData.userType === "main-admin") {
-        navigate("/admin");
-      } else {
-        navigate("/guest-admin");
-      }
     } catch (err) {
       setError("Invalid email or password");
+      console.log(err.message);
     } finally {
       setLoading(false);
     }

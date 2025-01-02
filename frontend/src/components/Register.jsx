@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card";
-import { Alert, AlertDescription } from "@/components/ui/Alert";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -26,6 +33,7 @@ export const RegisterPage = () => {
     confirmPassword: "",
     address: "",
     phoneNumber: "",
+    userType: "", // Added user type field
   });
 
   const handleSubmit = async (e) => {
@@ -35,6 +43,12 @@ export const RegisterPage = () => {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.userType) {
+      setError("Please select a user type");
       setLoading(false);
       return;
     }
@@ -63,7 +77,7 @@ export const RegisterPage = () => {
             Create Account
           </CardTitle>
           <CardDescription className="text-center">
-            Register your hotel to get started
+            Register to get started
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -75,17 +89,37 @@ export const RegisterPage = () => {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="hotelName">Hotel Name</Label>
-              <Input
-                id="hotelName"
-                required
-                placeholder="Enter hotel name"
-                value={formData.hotelName}
-                onChange={(e) =>
-                  setFormData({ ...formData, hotelName: e.target.value })
+              <Label htmlFor="userType">Register As</Label>
+              <Select
+                value={formData.userType}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, userType: value })
                 }
-              />
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select user type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="main-admin">Main Admin</SelectItem>
+                  <SelectItem value="guest-admin">Guest Admin</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+
+            {formData.userType === "guest-admin" && (
+              <div className="space-y-2">
+                <Label htmlFor="hotelName">Hotel Name</Label>
+                <Input
+                  id="hotelName"
+                  required
+                  placeholder="Enter hotel name"
+                  value={formData.hotelName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, hotelName: e.target.value })
+                  }
+                />
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -120,7 +154,7 @@ export const RegisterPage = () => {
               <Input
                 id="address"
                 required
-                placeholder="Enter hotel address"
+                placeholder="Enter address"
                 value={formData.address}
                 onChange={(e) =>
                   setFormData({ ...formData, address: e.target.value })

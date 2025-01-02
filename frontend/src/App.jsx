@@ -12,6 +12,24 @@ import { LoginPage } from "@/components/Login";
 import { RegisterPage } from "@/components/Register";
 import { useAuthContext } from "./context/AuthContext";
 
+// Protected Route Component
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { authUser } = useAuthContext();
+
+  if (!authUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(authUser.userType)) {
+    // Redirect based on user role
+    const redirectPath =
+      authUser.userType === "main-admin" ? "/admin" : "/guest-admin";
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return children;
+};
+
 // App Component
 const App = () => {
   const { authUser } = useAuthContext();
@@ -21,21 +39,85 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route path="/admin" element={<MainAdminDashboard />} />
-        <Route path="/guest-admin" element={<GuestAdminDashboard />} />
+        {/* Protected Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["main-admin"]}>
+              <MainAdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/guest-admin"
+          element={
+            <ProtectedRoute allowedRoles={["guest-admin"]}>
+              <GuestAdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Public Routes */}
         <Route
           path="/guest-registration/:hotelId"
           element={<GuestLandingPage />}
         />
-        <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route
-          path={"/login"}
-          element={!authUser ? <LoginPage /> : <Navigate to="/admin" replace />}
+          path="/login"
+          element={
+            !authUser ? (
+              <LoginPage />
+            ) : (
+              <Navigate
+                to={authUser.role === "main-admin" ? "/admin" : "/guest-admin"}
+                replace
+              />
+            )
+          }
         />
         <Route
-          path={"/register"}
+          path="/register"
           element={
-            !authUser ? <RegisterPage /> : <Navigate to="/admin" replace />
+            !authUser ? (
+              <RegisterPage />
+            ) : (
+              <Navigate
+                to={authUser.role === "main-admin" ? "/admin" : "/guest-admin"}
+                replace
+              />
+            )
+          }
+        />
+
+        {/* Root Route */}
+        <Route
+          path="/"
+          element={
+            !authUser ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <Navigate
+                to={authUser.role === "main-admin" ? "/admin" : "/guest-admin"}
+                replace
+              />
+            )
+          }
+        />
+
+        {/* Catch all route */}
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to={
+                authUser
+                  ? authUser.role === "main-admin"
+                    ? "/admin"
+                    : "/guest-admin"
+                  : "/login"
+              }
+              replace
+            />
           }
         />
       </Routes>
