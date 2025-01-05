@@ -20,14 +20,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useAuthContext } from "../context/AuthContext";
 
 export const RegisterPage = () => {
+  const { authUser, setAuthUser } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    hotelName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -54,14 +56,37 @@ export const RegisterPage = () => {
     }
 
     try {
-      // Add your registration API call here
-      console.log("Registration attempt:", formData);
+      // Add your login API call here
+      const response = await fetch(
+        "https://guest-onborad.vercel.app/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Invalid email or password");
+      } else {
+        const data = await response.json();
+        localStorage.setItem("guest-user", JSON.stringify(data));
+        setAuthUser(data);
+        console.log("User logged in:", data.userType);
+
+        // Redirect based on user type
+        if (data.userType === "main-admin") {
+          console.log("User logged in as main-admin");
+
+          navigate("/admin");
+        } else {
+          console.log("User logged in as guest-admin");
+
+          navigate("/guest-admin");
+        }
+      }
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to login
-      navigate("/login");
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {

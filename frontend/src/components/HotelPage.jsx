@@ -11,7 +11,7 @@ const HotelPage = () => {
   const getHotelById = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:4224/hotel/get-hotel-by-id/${id}`
+        `https://guest-onborad.vercel.app/hotel/get-hotel-by-id/${id}`
       );
       if (!response.ok) {
         throw new Error("Hotel not found");

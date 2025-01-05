@@ -41,7 +41,7 @@ export const LoginPage = () => {
 
     try {
       // Add your login API call here
-      const response = await fetch("http://localhost:4224/auth/login", {
+      const response = await fetch("https://guest-onborad.vercel.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

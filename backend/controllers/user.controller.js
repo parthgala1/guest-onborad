@@ -6,7 +6,7 @@ export const userRegister = async (req, res) => {
   try {
     const {
       userType,
-      hotelName,
+      name,
       email,
       phoneNumber,
       address,
@@ -28,7 +28,7 @@ export const userRegister = async (req, res) => {
 
     const newUser = new User({
       userType,
-      hotelName,
+      name,
       email,
       phoneNumber,
       address,

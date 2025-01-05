@@ -1,9 +1,10 @@
 import Hotel from "../models/hotel.model.js";
 import cloudinary from "cloudinary";
 import QRCode from "qrcode";
+import User from "../models/user.model.js";
 
 export const createHotel = async (req, res) => {
-  const { name, address } = req.body;
+  const { name, address, userId } = req.body;
   try {
     if (name === "" || address === "") {
       throw new Error("All fields are required");
@@ -12,6 +13,11 @@ export const createHotel = async (req, res) => {
     if (existingHotel) {
       throw new Error("Hotel already exists");
     }
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     let imageUrl = "";
     if (req.file) {
       try {
@@ -33,7 +39,7 @@ export const createHotel = async (req, res) => {
       }
     }
 
-    const hotel = await Hotel.create({ name, address, logo: imageUrl });
+    const hotel = await Hotel.create({ name, address, logo: imageUrl, user });
     res.status(201).json(hotel);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -60,6 +66,23 @@ export const getHotelById = async (req, res) => {
       throw new Error("Hotel not found");
     }
     res.status(200).json(hotel);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getHotelsByUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const hotels = await Hotel.find({ user });
+    if (!hotels) {
+      throw new Error("No hotels found");
+    }
+    res.status(200).json(hotels);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

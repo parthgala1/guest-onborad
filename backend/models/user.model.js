@@ -10,7 +10,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    hotelName: {
+    name: {
       type: String,
     },
     phoneNumber: {

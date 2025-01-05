@@ -44,7 +44,7 @@ export const MainAdminDashboard = () => {
   const getHotelById = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:4224/hotel/get-hotel-by-id/${id}`
+        `https://guest-onborad.vercel.app/hotel/get-hotel-by-id/${id}`
       );
       const data = await response.json();
       return data;
@@ -58,7 +58,7 @@ export const MainAdminDashboard = () => {
     const fetchHotels = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4224/hotel/get-all-hotels"
+          "https://guest-onborad.vercel.app/hotel/get-all-hotels"
         );
         const data = await response.json();
         setHotels(data);
@@ -76,12 +76,16 @@ export const MainAdminDashboard = () => {
     formData.append("name", newHotel.name);
     formData.append("address", newHotel.address);
     formData.append("image", newHotel.logo);
+    formData.append("userId", authUser._id);
 
     try {
-      const response = await fetch("http://localhost:4224/hotel/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://guest-onborad.vercel.app/hotel/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await response.json();
 
       if (response.ok) {
@@ -89,7 +93,8 @@ export const MainAdminDashboard = () => {
         setShowAddHotelModal(false);
         // Refresh the hotels list
         const updatedResponse = await fetch(
-          "http://localhost:4224/hotel/get-all-hotels"
+          "https://guest-onborad.vercel.app/hotel/get-hotels-by-user/" +
+            authUser._id
         );
         const updatedData = await updatedResponse.json();
         setHotels(updatedData);
@@ -103,12 +108,15 @@ export const MainAdminDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:4224/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://guest-onborad.vercel.app/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -124,7 +132,7 @@ export const MainAdminDashboard = () => {
 
   const generateHotelDetailsUrl = (hotelId) => {
     // Replace this with your actual frontend URL where hotel details will be displayed
-    return `https://m3gg620n-5173.inc1.devtunnels.ms/hotel/${hotelId}`;
+    return `http:localhost:5173/hotel/${hotelId}`;
   };
 
   const handleShowQRCode = async (hotel) => {
