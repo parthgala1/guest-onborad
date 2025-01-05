@@ -44,7 +44,7 @@ export const MainAdminDashboard = () => {
   const getHotelById = async (id) => {
     try {
       const response = await fetch(
-        `https://guest-onborad-client.vercel.app/hotel/get-hotel-by-id/${id}`
+        `https://guest-onborad.vercel.app/hotel/get-hotel-by-id/${id}`
       );
       const data = await response.json();
       return data;
@@ -132,7 +132,7 @@ export const MainAdminDashboard = () => {
 
   const generateHotelDetailsUrl = (hotelId) => {
     // Replace this with your actual frontend URL where hotel details will be displayed
-    return `http:localhost:5173/hotel/${hotelId}`;
+    return `https://guest-onborad-client.vercel.app/admin/hotel/${hotelId}`;
   };
 
   const handleShowQRCode = async (hotel) => {
