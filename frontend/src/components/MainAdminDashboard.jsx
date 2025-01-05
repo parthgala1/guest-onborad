@@ -132,7 +132,7 @@ export const MainAdminDashboard = () => {
 
   const generateHotelDetailsUrl = (hotelId) => {
     // Replace this with your actual frontend URL where hotel details will be displayed
-    return `https://guest-onborad-client.vercel.app/admin/hotel/${hotelId}`;
+    return `https://guest-onborad-client.vercel.app/hotel/${hotelId}`;
   };
 
   const handleShowQRCode = async (hotel) => {
