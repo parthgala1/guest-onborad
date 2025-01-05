@@ -13,8 +13,19 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "https://guest-onborad-client.vercel.app", // For Vercel deployment
+  "http://localhost:3000", // For local development
+];
+
 const corsOptions = {
-  origin: "https://guest-onborad-client.vercel.app",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,

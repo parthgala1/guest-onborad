@@ -44,7 +44,7 @@ export const MainAdminDashboard = () => {
   const getHotelById = async (id) => {
     try {
       const response = await fetch(
-        `https://guest-onborad.vercel.app/hotel/get-hotel-by-id/${id}`
+        `https://guest-onborad-client.vercel.app/hotel/get-hotel-by-id/${id}`
       );
       const data = await response.json();
       return data;
