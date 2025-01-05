@@ -1,24 +1,19 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useAuthContext } from "../context/AuthContext";
+import { QRCode } from "react-qr-code";
 
 export const GuestAdminDashboard = () => {
   const { authUser, setAuthUser } = useAuthContext();
   const [guests, setGuests] = useState([]);
-  const [newGuest, setNewGuest] = useState({
-    fullName: "",
-    mobileNumber: "",
-    purposeOfVisit: "",
-    stayDateFrom: "",
-    stayDateTo: "",
-  });
-
-  const handleAddGuest = async (e) => {
-    e.preventDefault();
-    setGuests([...guests, newGuest]);
-    console.log("Adding Guests:", guests);
-  };
+  const [showQRModal, setShowQRModal] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -37,11 +32,21 @@ export const GuestAdminDashboard = () => {
         throw new Error(errorData.error || "Logout failed");
       }
 
-      localStorage.removeItem("blog-user");
+      localStorage.removeItem("guest-user");
       setAuthUser(null);
     } catch (error) {
       console.error("Error during logout:", error.message);
     }
+  };
+
+  const generateHotelDetailsUrl = (hotelId) => {
+    // Replace this with your actual frontend URL where hotel details will be displayed
+    return `https://guest-onborad-client.vercel.app/guest-registration/${hotelId}`;
+  };
+
+  const handleShowQRCode = (user) => {
+    user.detailsUrl = generateHotelDetailsUrl(user._id);
+    setShowQRModal(true);
   };
 
   return (
@@ -57,6 +62,14 @@ export const GuestAdminDashboard = () => {
               <p>Role: Administrator</p>
             </div>
           </div>
+          <Button
+            onClick={() => handleShowQRCode(authUser)}
+            variant="outline"
+            size="sm"
+            className="mr-2"
+          >
+            View QR
+          </Button>
           <Button
             onClick={handleLogout}
             variant="destructive"
@@ -124,6 +137,29 @@ export const GuestAdminDashboard = () => {
           </table>
         </div>
       </Card>
+
+      {/* Add New Guest Form */}
+      <Dialog open={showQRModal} onOpenChange={setShowQRModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-xl font-bold">
+                {authUser.hotelName} QR Code
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center justify-center p-6">
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <QRCode
+                value={authUser.detailsUrl}
+                size={256}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
