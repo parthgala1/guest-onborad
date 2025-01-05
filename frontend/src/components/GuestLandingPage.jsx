@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/Select";
+} from "@/components/ui/select";
 
 export const GuestLandingPage = () => {
   const [guestInfo, setGuestInfo] = useState({
