@@ -138,9 +138,7 @@ export const GuestAdminDashboard = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {guests?.map((guest, index) => (
                 <tr key={index}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {guest.name}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{guest.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {guest.mobileNumber}
                   </td>
@@ -181,6 +179,7 @@ export const GuestAdminDashboard = () => {
 
           <div className="flex flex-col items-center justify-center p-6">
             <div className="bg-white p-4 rounded-lg shadow-sm">
+              {/* Create a ref for the QR code */}
               <QRCode
                 ref={qrCodeRef}
                 value={authUser.detailsUrl}
