@@ -121,7 +121,7 @@ export const GuestLandingPage = () => {
       return;
     }
 
-    navigate(`/hotel/${guestInfo.hotelId}`);
+    navigate(`/thank-you`);
     alert("Guest info submitted successfully");
 
     console.log("Submitting guest info:", guestInfo);
