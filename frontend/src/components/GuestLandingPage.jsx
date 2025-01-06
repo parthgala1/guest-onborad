@@ -11,10 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const GuestLandingPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [guestInfo, setGuestInfo] = useState({
     name: "",
     mobileNumber: "",
@@ -64,7 +65,6 @@ export const GuestLandingPage = () => {
       stayDateTo: date,
     }));
   };
-  console.log("guestInfo", guestInfo);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,6 +121,7 @@ export const GuestLandingPage = () => {
       return;
     }
 
+    navigate(`/hotel/${guestInfo.hotelId}`);
     alert("Guest info submitted successfully");
 
     console.log("Submitting guest info:", guestInfo);

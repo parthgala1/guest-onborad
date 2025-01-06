@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { QRCode } from "react-qr-code";
 
 export const GuestAdminDashboard = () => {
+  const qrCodeRef = useRef(null);
   const { authUser, setAuthUser } = useAuthContext();
   const [guests, setGuests] = useState([]);
   const [showQRModal, setShowQRModal] = useState(false);
@@ -35,7 +36,7 @@ export const GuestAdminDashboard = () => {
 
         const guestsData = await response.json();
 
-        setGuests(guestsData.guests);
+        setGuests(guestsData);
       } catch (error) {
         console.error("Error fetching guests:", error.message);
       }
@@ -181,12 +182,25 @@ export const GuestAdminDashboard = () => {
           <div className="flex flex-col items-center justify-center p-6">
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <QRCode
+                ref={qrCodeRef}
                 value={authUser.detailsUrl}
                 size={256}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
               />
             </div>
           </div>
+          <Button
+            onClick={() => {
+              const qrCodeCanvas = qrCodeRef.current.querySelector("canvas");
+              const dataUrl = qrCodeCanvas.toDataURL("image/png");
+              const link = document.createElement("a");
+              link.href = dataUrl;
+              link.download = `${authUser.hotelName}-QR-Code.png`;
+              link.click();
+            }}
+          >
+            Download
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
