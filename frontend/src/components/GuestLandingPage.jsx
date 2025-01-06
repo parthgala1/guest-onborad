@@ -34,6 +34,7 @@ export const GuestLandingPage = () => {
       ...prev,
       hotelId: hotelId,
     }));
+    console.log("hotelId", hotelId);
   }, [location.pathname]);
 
   // Get today's date at midnight for consistent comparison
