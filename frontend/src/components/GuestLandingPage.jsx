@@ -101,6 +101,7 @@ export const GuestLandingPage = () => {
       alert("Please enter a valid 10-digit mobile number");
       return;
     }
+    console.log("guestInfo", guestInfo);
 
     // API call to submit guest info
     const response = await fetch(
