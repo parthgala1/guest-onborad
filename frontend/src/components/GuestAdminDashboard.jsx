@@ -42,7 +42,7 @@ export const GuestAdminDashboard = () => {
     };
 
     fetchGuests();
-  }, []);
+  }, [authUser._id]);
 
   const handleLogout = async () => {
     try {
@@ -135,7 +135,7 @@ export const GuestAdminDashboard = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {guests.map((guest, index) => (
+              {guests?.map((guest, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {guest.fullName}
