@@ -11,15 +11,13 @@ export const addGuest = async (req, res) => {
     email,
     idProofType,
     idProofNumber,
+    hotelId,
   } = req.body;
-
-  const hotelId = req.params;
   try {
     const guest = await Guest.findOne({ idProofNumber: idProofNumber });
     if (guest) {
       return res.status(400).json({ message: "Guest already exists" });
     }
-
     const newGuest = new Guest({
       name,
       mobileNumber,
