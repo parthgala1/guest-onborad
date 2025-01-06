@@ -64,6 +64,7 @@ export const GuestLandingPage = () => {
       stayDateTo: date,
     }));
   };
+  console.log("guestInfo", guestInfo);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,7 +102,6 @@ export const GuestLandingPage = () => {
       alert("Please enter a valid 10-digit mobile number");
       return;
     }
-    console.log("guestInfo", guestInfo);
 
     // API call to submit guest info
     const response = await fetch(
