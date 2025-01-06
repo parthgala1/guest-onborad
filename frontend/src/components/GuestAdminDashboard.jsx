@@ -19,7 +19,7 @@ export const GuestAdminDashboard = () => {
     const fetchGuests = async () => {
       try {
         const response = await fetch(
-          "https://guest-onborad.vercel.app/guests/all",
+          `https://guest-onborad.vercel.app/guests/get-guest-by-hotel-id/${authUser._id}`,
           {
             method: "GET",
             headers: {

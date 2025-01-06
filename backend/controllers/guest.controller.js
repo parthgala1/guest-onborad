@@ -49,3 +49,18 @@ export const getAllGuests = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const getGuestByHotelId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const guest = await Guest.find({ hotelId: id });
+    if (!guest) {
+      return res.status(404).json({ message: "Guest not found" });
+    }
+
+    res.status(200).json(guest);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
