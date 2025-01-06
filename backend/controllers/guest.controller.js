@@ -12,6 +12,8 @@ export const addGuest = async (req, res) => {
     idProofType,
     idProofNumber,
   } = req.body;
+
+  const hotelId = req.params;
   try {
     const guest = await Guest.findOne({ idProofNumber: idProofNumber });
     if (guest) {
@@ -28,6 +30,7 @@ export const addGuest = async (req, res) => {
       email,
       idProofType,
       idProofNumber,
+      hotelId,
     });
 
     await newGuest.save();

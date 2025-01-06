@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,35 @@ export const GuestAdminDashboard = () => {
   const { authUser, setAuthUser } = useAuthContext();
   const [guests, setGuests] = useState([]);
   const [showQRModal, setShowQRModal] = useState(false);
+
+  useEffect(() => {
+    const fetchGuests = async () => {
+      try {
+        const response = await fetch(
+          "https://guest-onborad.vercel.app/guests/all",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Fetching guests failed");
+        }
+
+        const guestsData = await response.json();
+
+        setGuests(guestsData.guests);
+      } catch (error) {
+        console.error("Error fetching guests:", error.message);
+      }
+    };
+
+    fetchGuests();
+  }, []);
 
   const handleLogout = async () => {
     try {

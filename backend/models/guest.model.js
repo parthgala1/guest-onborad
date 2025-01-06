@@ -35,6 +35,10 @@ const guestSchema = new Schema(
     idProofNumber: {
       type: String,
     },
+    hotelId: {
+      type: Schema.Types.ObjectId,
+      ref: "Hotel",
+    },
   },
   { timestamps: true }
 );

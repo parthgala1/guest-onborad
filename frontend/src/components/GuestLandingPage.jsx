@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,8 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLocation } from "react-router-dom";
 
 export const GuestLandingPage = () => {
+  const location = useLocation();
   const [guestInfo, setGuestInfo] = useState({
     name: "",
     mobileNumber: "",
@@ -23,7 +25,16 @@ export const GuestLandingPage = () => {
     emailId: "",
     idProofType: "",
     idProofNumber: "",
+    hotelId: "",
   });
+
+  useEffect(() => {
+    const hotelId = location.pathname.split("/")[2];
+    setGuestInfo((prev) => ({
+      ...prev,
+      hotelId: hotelId,
+    }));
+  }, [location.pathname]);
 
   // Get today's date at midnight for consistent comparison
   const today = new Date();
@@ -121,8 +132,8 @@ export const GuestLandingPage = () => {
         </h2>
       </div>
 
-      <div className="mt-4 sm:mt-8 sm:mx-auto max-w-4xl sm:max-w-md">
-        <Card className="p-4 sm:p-8">
+      <div className="mt-4 sm:mt-8 sm:mx-auto sm:max-w-md">
+        <Card className="p-4 sm:p-8 min-w-screen mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
               <Label htmlFor="name">Full Name</Label>
