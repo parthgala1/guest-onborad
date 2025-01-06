@@ -8,15 +8,16 @@ import cloudinary from "cloudinary";
 
 import userRoutes from "./routes/user.routes.js";
 import hotelRoutes from "./routes/hotel.routes.js";
+import guestRoutes from "./routes/guest.routes.js";
 
 dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "https://guest-onborad-client.vercel.app", // For Vercel deployment
-  "http://localhost:3000", // For local development
-];
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? ["https://guest-onborad-client.vercel.app"] // Production origins
+    : ["http://localhost:5173"]; // Development origins
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -30,6 +31,8 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
+
+app.use(cors(corsOptions));
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -51,6 +54,7 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", userRoutes);
 app.use("/hotel", hotelRoutes);
+app.use("/guests", guestRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening to PORT ${PORT}`);

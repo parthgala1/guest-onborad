@@ -68,7 +68,7 @@ export const GuestAdminDashboard = () => {
             size="sm"
             className="mr-2"
           >
-            View QR
+            Save QR
           </Button>
           <Button
             onClick={handleLogout}
