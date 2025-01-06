@@ -14,7 +14,7 @@ import {
 
 export const GuestLandingPage = () => {
   const [guestInfo, setGuestInfo] = useState({
-    fullName: "",
+    name: "",
     mobileNumber: "",
     address: "",
     purposeOfVisit: "",
@@ -58,7 +58,7 @@ export const GuestLandingPage = () => {
 
     // Validate required fields
     const requiredFields = [
-      "fullName",
+      "name",
       "mobileNumber",
       "emailId",
       "address",
@@ -125,15 +125,15 @@ export const GuestLandingPage = () => {
         <Card className="p-4 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="name">Full Name</Label>
               <Input
-                id="fullName"
+                id="name"
                 type="text"
                 required
                 className="mt-1"
-                value={guestInfo.fullName}
+                value={guestInfo.name}
                 onChange={(e) =>
-                  setGuestInfo({ ...guestInfo, fullName: e.target.value })
+                  setGuestInfo({ ...guestInfo, name: e.target.value })
                 }
                 placeholder="Enter your full name"
               />

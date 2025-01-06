@@ -4,15 +4,16 @@ export const addGuest = async (req, res) => {
   const {
     name,
     mobileNumber,
+    address,
     purposeOfVisit,
     stayDateFrom,
     stayDateTo,
     email,
     idProofType,
-    idProof,
+    idProofNumber,
   } = req.body;
   try {
-    const guest = await Guest.findOne({ idProof: idProof });
+    const guest = await Guest.findOne({ idProofNumber: idProofNumber });
     if (guest) {
       return res.status(400).json({ message: "Guest already exists" });
     }
@@ -21,11 +22,12 @@ export const addGuest = async (req, res) => {
       name,
       mobileNumber,
       purposeOfVisit,
+      address,
       stayDateFrom,
       stayDateTo,
       email,
       idProofType,
-      idProof,
+      idProofNumber,
     });
 
     await newGuest.save();

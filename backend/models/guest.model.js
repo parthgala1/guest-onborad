@@ -10,6 +10,10 @@ const guestSchema = new Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     purposeOfVisit: {
       type: String,
       required: true,
@@ -28,7 +32,7 @@ const guestSchema = new Schema(
     idProofType: {
       type: String,
     },
-    idProof: {
+    idProofNumber: {
       type: String,
     },
   },
