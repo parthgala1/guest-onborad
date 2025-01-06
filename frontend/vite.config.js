@@ -10,4 +10,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://guest-onborad.vercel.app", // Backend API URL
+        changeOrigin: true, // Set to true if backend uses a different domain
+        rewrite: (path) => path.replace(/^\/api/, ""), // Remove '/api' prefix
+      },
+    },
+  },
 });

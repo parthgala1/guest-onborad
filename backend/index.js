@@ -16,8 +16,8 @@ const app = express();
 
 // Define allowed origins based on environment
 const allowedOrigins = [
-  "http://localhost:5173", // Local development
   "https://guest-onborad-client.vercel.app", // Production
+  "http://localhost:5173", // Local development
   // Add any other origins as needed
 ];
 
