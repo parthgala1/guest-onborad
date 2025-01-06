@@ -97,7 +97,7 @@ export const GuestAdminDashboard = () => {
 
     try {
       const response = await fetch(
-        `https://guest-onborad-client.vercel.app/guests/get-guest-by-id/${id}`,
+        `https://guest-onborad.vercel.app/guests/get-guest-by-id/${id}`,
         {
           method: "GET",
           headers: {
