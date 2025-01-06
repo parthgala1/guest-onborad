@@ -139,7 +139,7 @@ export const GuestAdminDashboard = () => {
               {guests?.map((guest, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {guest.fullName}
+                    {guest.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {guest.mobileNumber}

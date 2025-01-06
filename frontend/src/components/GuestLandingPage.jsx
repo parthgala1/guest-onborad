@@ -47,22 +47,37 @@ export const GuestLandingPage = () => {
   maxDate.setMonth(maxDate.getMonth() + 6);
 
   const handleFromDateSelect = (date) => {
+    const formattedFromDate = new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     setGuestInfo((prev) => {
       // If "To" date exists and is before the new "From" date, clear it
       const newToDate =
-        prev.stayDateTo && prev.stayDateTo < date ? null : prev.stayDateTo;
+        prev.stayDateTo && new Date(prev.stayDateTo) < date
+          ? null
+          : prev.stayDateTo;
+
       return {
         ...prev,
-        stayDateFrom: date,
+        stayDateFrom: formattedFromDate,
         stayDateTo: newToDate,
       };
     });
   };
 
   const handleToDateSelect = (date) => {
+    const formattedToDate = new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     setGuestInfo((prev) => ({
       ...prev,
-      stayDateTo: date,
+      stayDateTo: formattedToDate,
     }));
   };
 
